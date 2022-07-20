@@ -14,16 +14,40 @@
         <v-card-text class="mx-auto d-flex flex mt-8">
           <div class="" style="width: 50%">
             <h3>Player 1:</h3>
-            <v-radio-group v-model="player_color_0">
-              <v-radio value="red" label="Vermelho"> </v-radio>
-              <v-radio value="blue" label="Azul">> </v-radio>
+            <v-radio-group v-model="set_players[0].color">
+              <v-radio value="red" color="red" label="Vermelho"> </v-radio>
+              <v-radio value="blue" color="blue" label="Azul">> </v-radio>
+              <v-radio value="green" color="green" label="Verde"></v-radio>
+              <v-radio value="yellow" color="yellow" label="Amarelo"></v-radio>
+              <v-radio
+                value="pink lighten-2"
+                color="pink lighten-2"
+                label="Rosa"
+              ></v-radio>
+              <v-radio
+                value="purple lighten-2"
+                color="purple lighten-2"
+                label="Roxo"
+              ></v-radio>
             </v-radio-group>
           </div>
           <div class="" style="width: 50%">
             <h3>Player 2:</h3>
-            <v-radio-group v-model="player_color_1">
-              <v-radio value="red" label="Vermelho"> </v-radio>
-              <v-radio value="blue" label="Azul"> </v-radio>
+            <v-radio-group v-model="set_players[1].color">
+              <v-radio value="red" color="red" label="Vermelho"> </v-radio>
+              <v-radio value="blue" color="blue" label="Azul">> </v-radio>
+              <v-radio value="green" color="green" label="Verde"></v-radio>
+              <v-radio value="yellow" color="yellow" label="Amarelo"></v-radio>
+              <v-radio
+                value="pink lighten-2"
+                color="pink lighten-2"
+                label="Rosa"
+              ></v-radio>
+              <v-radio
+                value="purple lighten-2"
+                color="purple lighten-2"
+                label="Roxo"
+              ></v-radio>
             </v-radio-group>
           </div>
         </v-card-text>
@@ -93,23 +117,27 @@ export default {
   name: "GameZone",
   methods: {
     setPLayers() {
-      if (!this.player_color_0 && !this.player_color_1) {
+      if (!this.set_players[0].color && !this.set_players[1].color) {
         alert("Insira as cores");
       }
       if (
-        this.player_color_0 &&
-        this.player_color_1 &&
-        this.player_color_0 === this.player_color_1
+        this.set_players[0].color &&
+        this.set_players[1].color &&
+        this.set_players[0].color === this.set_players[1].color
       ) {
         alert("Cores não podem ser iguais!");
       }
       if (
-        this.player_color_0 &&
-        this.player_color_1 &&
-        this.player_color_0 != this.player_color_1
+        this.set_players[0].color &&
+        this.set_players[1].color &&
+        this.set_players[0].color != this.set_players[1].color
       ) {
-        alert("OK");
+        console.log("OK");
         this.dialog = false;
+        this.player_current.color = this.set_players[0].color;
+
+        this.players[0].color = this.set_players[0].color;
+        this.players[1].color = this.set_players[1].color;
       }
     },
     handleThrow(i) {
@@ -132,14 +160,17 @@ export default {
   data() {
     return {
       dialog: true,
-      player_current: { color: "blue", player: 0, icon: "mdi-close" },
 
-      player_color_0: "",
-      player_color_1: "",
+      player_current: { color: "", player: 0, icon: "mdi-close" },
+
+      set_players: [
+        { color: "", icon: "", player: 0 },
+        { color: "", icon: "", player: 1 },
+      ],
 
       players: [
-        { color: "blue", player: 0, icon: "mdi-close" },
-        { color: "red", player: 1, icon: "mdi-circle-outline" },
+        { color: "", player: 0, icon: "mdi-close" },
+        { color: "", player: 1, icon: "mdi-circle-outline" },
       ],
 
       cards: [
