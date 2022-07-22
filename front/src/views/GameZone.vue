@@ -43,7 +43,6 @@
             </v-radio-group>
             <div class="d-flex align-center">
               <v-text-field
-                :rules="rules"
                 counter
                 maxlength="8"
                 hide-details
@@ -115,7 +114,6 @@
             </v-radio-group>
             <div class="d-flex align-center">
               <v-text-field
-                :rules="rules"
                 counter
                 maxlength="8"
                 hide-details
@@ -133,7 +131,8 @@
                 size="50"
                 :color="set_players[1].color"
                 >{{ set_players[1].icon }}</v-icon
-              ><v-icon v-else size="50" class="ml-4">mdi-help</v-icon>
+              >
+              <v-icon v-else size="50" class="ml-4">mdi-help</v-icon>
             </div>
             <v-col>
               <v-chip-group
@@ -177,14 +176,50 @@
         </v-card-text>
         <div class="d-flex flex-column">
           <v-btn class="gradiente_dark_blue ma-4" @click="setPLayers()"
-            >JOGAR</v-btn
-          >
+            >JOGAR
+          </v-btn>
         </div>
       </v-card>
+      <v-dialog v-model="dialog_alert" max-width="500px">
+        <v-card class="pa-6">
+          <div class="d-flex align-end justify-center flex">
+            <v-icon color="red" size="40">mdi-alert</v-icon>
+            <h2 class="mx-2 red--text">{{ message_alert }}</h2>
+          </div>
+        </v-card>
+      </v-dialog>
     </v-dialog>
+    <!-- JOGADORES -->
+    <v-row class="mx-4">
+      <v-col cols="4" class="d-flex mt-16 mx-auto">
+        <div class="d-flex flex-column align-start" style="width: 50%">
+          <v-icon v-if="set_players[0].icon" size="50" :color="players[0].color"
+            >{{ players[0].icon }}
+          </v-icon>
+          <v-icon v-else size="50" class="">mdi-help</v-icon>
+
+          <h3 class="text-right font-weight-light">Player 1</h3>
+
+          <h2 class="text-right" v-if="players[0].username">
+            {{ players[0].username }}
+          </h2>
+        </div>
+        <div class="d-flex flex-column align-end" style="width: 50%">
+          <v-icon v-if="set_players[1].icon" size="50" :color="players[1].color"
+            >{{ players[1].icon }}
+          </v-icon>
+          <v-icon v-else size="50" class="">mdi-help</v-icon>
+
+          <h3 class="text-right font-weight-light">Player 2</h3>
+          <h2 class="text-right" v-if="players[1].username">
+            {{ players[1].username }}
+          </h2>
+        </div>
+      </v-col>
+    </v-row>
     <div class="d-flex size_all">
       <v-card
-        class="white mx-auto my-auto"
+        class="white mx-auto mt-16"
         style="
           min-width: 500px;
           max-width: 500px;
@@ -242,27 +277,61 @@ export default {
   computed: {},
   methods: {
     setPLayers() {
-      if (!this.set_players[0].color && !this.set_players[1].color) {
-        alert("Insira as cores");
+      if (!this.set_players[0].color || !this.set_players[1].color) {
+        // alert("Insira as cores");
+        this.dialog_alert = true;
+        this.message_alert = "Insira as cores !";
+      }
+      if (!this.set_players[0].icon || !this.set_players[1].icon) {
+        // alert("Insira as cores");
+        this.dialog_alert = true;
+        this.message_alert = "Escolha os ícones !";
       }
       if (
         this.set_players[0].color &&
         this.set_players[1].color &&
         this.set_players[0].color === this.set_players[1].color
       ) {
-        alert("Cores não podem ser iguais!");
+        // alert("Cores não podem ser iguais!");
+        this.dialog_alert = true;
+        this.message_alert = "As cores não podem ser iguais !";
+      }
+      if (
+        this.set_players[0].icon &&
+        this.set_players[1].icon &&
+        this.set_players[0].icon === this.set_players[1].icon
+      ) {
+        // alert("Cores não podem ser iguais!");
+        this.dialog_alert = true;
+        this.message_alert = "Os ícones não podem ser iguais !";
       }
       if (
         this.set_players[0].color &&
         this.set_players[1].color &&
-        this.set_players[0].color != this.set_players[1].color
+        this.set_players[0].icon &&
+        this.set_players[1].icon &&
+        this.set_players[0].color != this.set_players[1].color &&
+        this.set_players[0].icon != this.set_players[1].icon
       ) {
         console.log("OK");
         this.dialog = false;
-        this.player_current.color = this.set_players[0].color;
+        if (this.player_current.player === 1) {
+          this.player_current.color = this.set_players[0].color;
+          this.player_current.icon = this.set_players[0].icon;
+          this.player_current.player = this.set_players[0].player;
+        }
+        if (this.player_current.player === 0) {
+          this.player_current.color = this.set_players[1].color;
+          this.player_current.icon = this.set_players[1].icon;
+          this.player_current.player = this.set_players[1].player;
+        }
 
         this.players[0].color = this.set_players[0].color;
         this.players[1].color = this.set_players[1].color;
+        this.players[0].icon = this.set_players[0].icon;
+        this.players[1].icon = this.set_players[1].icon;
+        this.players[0].username = this.set_players[0].username;
+        this.players[1].username = this.set_players[1].username;
       }
     },
     handleThrow(i) {
@@ -296,7 +365,10 @@ export default {
 
       dialog: true,
 
-      player_current: { color: "", player: 0, icon: "mdi-close" },
+      dialog_alert: false,
+      message_alert: "",
+
+      player_current: { color: "", player: 0, icon: "" },
 
       set_players: [
         { color: "", icon: "", player: 0 },
@@ -339,7 +411,6 @@ export default {
         },
         { used: false, color: "white", player: null, icon: "" },
       ],
-      rules: [(v) => v.length <= 8 || "Máximo de 8 carácteres"],
     };
   },
 
