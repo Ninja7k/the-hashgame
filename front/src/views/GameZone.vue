@@ -4,21 +4,32 @@
     <v-dialog
       persistent
       v-model="dialog"
-      max-width="500px"
+      max-width="700px"
       class="elevation-18"
     >
       <v-card>
         <v-card-title class="gradiente_dark_blue"
-          >Escolha as cores</v-card-title
-        >
+          >Escolha as cores, símbolos e usernames
+        </v-card-title>
         <v-card-text class="mx-auto d-flex flex mt-8">
+          <!-- PLAYER 1 -->
           <div class="" style="width: 50%">
-            <h3>Player 1:</h3>
+            <div class="d-flex align-">
+              <h3>Player 1</h3>
+              <h1 class="ml-2 retro-font font-weight-light">
+                {{ set_players[0].username }}
+              </h1>
+            </div>
+
             <v-radio-group v-model="set_players[0].color">
               <v-radio value="red" color="red" label="Vermelho"> </v-radio>
               <v-radio value="blue" color="blue" label="Azul">> </v-radio>
               <v-radio value="green" color="green" label="Verde"></v-radio>
-              <v-radio value="yellow" color="yellow" label="Amarelo"></v-radio>
+              <v-radio
+                value="orange"
+                color="orange"
+                label="Laranjado"
+              ></v-radio>
               <v-radio
                 value="pink lighten-2"
                 color="pink lighten-2"
@@ -30,9 +41,122 @@
                 label="Roxo"
               ></v-radio>
             </v-radio-group>
+            <div class="d-flex align-center">
+              <v-text-field
+                :rules="rules"
+                counter
+                maxlength="8"
+                hide-details
+                class="mr-2 my-4"
+                label="Username do player 1"
+                v-model="set_players[0].username"
+                outlined
+                :color="set_players[0].color"
+                dense
+                style="max-width: 200px"
+              />
+              <v-icon
+                class="ml-4"
+                v-if="set_players[0].icon"
+                size="50"
+                :color="set_players[0].color"
+                >{{ set_players[0].icon }}</v-icon
+              ><v-icon v-else size="50" class="ml-4">mdi-help</v-icon>
+            </div>
+            <v-col>
+              <v-chip-group
+                class="ml-n2"
+                active-class="text--accent-4"
+                v-model="set_players[0].icon"
+              >
+                <div>
+                  <v-chip
+                    :color="set_players[0].color"
+                    v-for="ic in icons"
+                    :key="ic"
+                    :value="ic"
+                    class="elevation-0 text-center"
+                  >
+                    <v-icon size="">{{ ic }}</v-icon>
+                  </v-chip>
+                </div>
+              </v-chip-group>
+            </v-col>
           </div>
+          <v-divider vertical class="mx-4"></v-divider>
+          <!-- PLAYER 2 -->
           <div class="" style="width: 50%">
-            <h3>Player 2:</h3>
+            <div class="d-flex align-">
+              <h3>Player 2</h3>
+              <h1 class="ml-2 retro-font font-weight-light">
+                {{ set_players[1].username }}
+              </h1>
+            </div>
+
+            <v-radio-group v-model="set_players[1].color">
+              <v-radio value="red" color="red" label="Vermelho"> </v-radio>
+              <v-radio value="blue" color="blue" label="Azul">> </v-radio>
+              <v-radio value="green" color="green" label="Verde"></v-radio>
+              <v-radio
+                value="orange"
+                color="orange"
+                label="Laranjado"
+              ></v-radio>
+              <v-radio
+                value="pink lighten-2"
+                color="pink lighten-2"
+                label="Rosa"
+              ></v-radio>
+              <v-radio
+                value="purple lighten-2"
+                color="purple lighten-2"
+                label="Roxo"
+              ></v-radio>
+            </v-radio-group>
+            <div class="d-flex align-center">
+              <v-text-field
+                :rules="rules"
+                counter
+                maxlength="8"
+                hide-details
+                class="mr-2 my-4"
+                label="Username do player 1"
+                v-model="set_players[1].username"
+                outlined
+                :color="set_players[1].color"
+                dense
+                style="max-width: 200px"
+              />
+              <v-icon
+                class="ml-4"
+                v-if="set_players[1].icon"
+                size="50"
+                :color="set_players[1].color"
+                >{{ set_players[1].icon }}</v-icon
+              ><v-icon v-else size="50" class="ml-4">mdi-help</v-icon>
+            </div>
+            <v-col>
+              <v-chip-group
+                class="ml-n2"
+                active-class="text--accent-4"
+                v-model="set_players[1].icon"
+              >
+                <div>
+                  <v-chip
+                    :color="set_players[1].color"
+                    v-for="ic in icons"
+                    :key="ic"
+                    :value="ic"
+                    class="elevation-0 text-center"
+                  >
+                    <v-icon size="">{{ ic }}</v-icon>
+                  </v-chip>
+                </div>
+              </v-chip-group>
+            </v-col>
+          </div>
+          <!-- <div class="" style="width: 50%">
+            <h3>Player 2</h3>
             <v-radio-group v-model="set_players[1].color">
               <v-radio value="red" color="red" label="Vermelho"> </v-radio>
               <v-radio value="blue" color="blue" label="Azul">> </v-radio>
@@ -49,7 +173,7 @@
                 label="Roxo"
               ></v-radio>
             </v-radio-group>
-          </div>
+          </div> -->
         </v-card-text>
         <div class="d-flex flex-column">
           <v-btn class="gradiente_dark_blue ma-4" @click="setPLayers()"
@@ -115,6 +239,7 @@
 <script>
 export default {
   name: "GameZone",
+  computed: {},
   methods: {
     setPLayers() {
       if (!this.set_players[0].color && !this.set_players[1].color) {
@@ -159,6 +284,16 @@ export default {
   },
   data() {
     return {
+      icons: [
+        "mdi-close",
+        "mdi-close-outline",
+        "mdi-circle-outline",
+        "mdi-close-thick",
+        "mdi-circle-double",
+      ],
+
+      color_1: "",
+
       dialog: true,
 
       player_current: { color: "", player: 0, icon: "mdi-close" },
@@ -204,6 +339,7 @@ export default {
         },
         { used: false, color: "white", player: null, icon: "" },
       ],
+      rules: [(v) => v.length <= 8 || "Máximo de 8 carácteres"],
     };
   },
 
@@ -226,5 +362,9 @@ export default {
 }
 .no_scroll {
   overflow: hidden;
+}
+.retro-font {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 </style>
