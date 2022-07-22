@@ -154,25 +154,6 @@
               </v-chip-group>
             </v-col>
           </div>
-          <!-- <div class="" style="width: 50%">
-            <h3>Player 2</h3>
-            <v-radio-group v-model="set_players[1].color">
-              <v-radio value="red" color="red" label="Vermelho"> </v-radio>
-              <v-radio value="blue" color="blue" label="Azul">> </v-radio>
-              <v-radio value="green" color="green" label="Verde"></v-radio>
-              <v-radio value="yellow" color="yellow" label="Amarelo"></v-radio>
-              <v-radio
-                value="pink lighten-2"
-                color="pink lighten-2"
-                label="Rosa"
-              ></v-radio>
-              <v-radio
-                value="purple lighten-2"
-                color="purple lighten-2"
-                label="Roxo"
-              ></v-radio>
-            </v-radio-group>
-          </div> -->
         </v-card-text>
         <div class="d-flex flex-column">
           <v-btn class="gradiente_dark_blue ma-4" @click="setPLayers()"
@@ -180,19 +161,27 @@
           </v-btn>
         </div>
       </v-card>
-      <v-dialog v-model="dialog_alert" max-width="500px">
-        <v-card class="pa-6">
-          <div class="d-flex align-end justify-center flex">
+      <!-- DIALOG DE ALEERTA -->
+      <v-dialog v-model="dialog_alert" max-width="550px">
+        <v-card class="pa-6 mx-auto">
+          <div class="d-flex align-end justify-center flex my-6">
             <v-icon color="red" size="40">mdi-alert</v-icon>
             <h2 class="mx-2 red--text">{{ message_alert }}</h2>
+          </div>
+          <div class="mt-6 d-flex my-6">
+            <v-btn
+              class="px-14 mt-4 mx-auto gradiente_dark_blue"
+              @click="dialog_alert = false"
+              >OK</v-btn
+            >
           </div>
         </v-card>
       </v-dialog>
     </v-dialog>
-    <!-- JOGADORES -->
+    <!-- PLACAR DE JOGADORES -->
     <v-row class="mx-4">
       <v-col cols="4" class="d-flex mt-16 mx-auto">
-        <div class="d-flex flex-column align-start" style="width: 50%">
+        <div class="d-flex flex-column align-start" style="width: 40%">
           <v-icon v-if="set_players[0].icon" size="50" :color="players[0].color"
             >{{ players[0].icon }}
           </v-icon>
@@ -204,7 +193,12 @@
             {{ players[0].username }}
           </h2>
         </div>
-        <div class="d-flex flex-column align-end" style="width: 50%">
+        <div class="d-flex" style="width: 20%">
+          <div class="mx-auto my-auto">
+            <h1 class="mx-auto">2 - 2</h1>
+          </div>
+        </div>
+        <div class="d-flex flex-column align-end" style="width: 40%">
           <v-icon v-if="set_players[1].icon" size="50" :color="players[1].color"
             >{{ players[1].icon }}
           </v-icon>
@@ -217,6 +211,7 @@
         </div>
       </v-col>
     </v-row>
+    <!-- TABULEIRO - HASH -->
     <div class="d-flex size_all">
       <v-card
         class="white mx-auto mt-16"
@@ -280,7 +275,7 @@ export default {
       if (!this.set_players[0].color || !this.set_players[1].color) {
         // alert("Insira as cores");
         this.dialog_alert = true;
-        this.message_alert = "Insira as cores !";
+        this.message_alert = "Escolha as cores !";
       }
       if (!this.set_players[0].icon || !this.set_players[1].icon) {
         // alert("Insira as cores");
@@ -304,6 +299,15 @@ export default {
         // alert("Cores não podem ser iguais!");
         this.dialog_alert = true;
         this.message_alert = "Os ícones não podem ser iguais !";
+      }
+      if (
+        this.set_players[0].username &&
+        this.set_players[1].username &&
+        this.set_players[0].username === this.set_players[1].username
+      ) {
+        // alert("Cores não podem ser iguais!");
+        this.dialog_alert = true;
+        this.message_alert = "Os usernames não podem ser iguais !";
       }
       if (
         this.set_players[0].color &&
@@ -426,7 +430,7 @@ export default {
   background: rgb(238, 2, 95);
   background: linear-gradient(
     90deg,
-    rgba(238, 2, 95, 0.2) 0%,
+    rgba(20, 0, 81, 0.66) 0%,
     rgba(2, 238, 216, 0.2) 50%,
     rgba(238, 2, 214, 0.2) 100%
   );
