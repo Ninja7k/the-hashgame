@@ -312,10 +312,13 @@ export default {
       if (
         this.set_players[0].color &&
         this.set_players[1].color &&
+        this.set_players[0].username &&
+        this.set_players[1].username &&
         this.set_players[0].icon &&
         this.set_players[1].icon &&
         this.set_players[0].color != this.set_players[1].color &&
-        this.set_players[0].icon != this.set_players[1].icon
+        this.set_players[0].icon != this.set_players[1].icon &&
+        this.set_players[0].username != this.set_players[1].username
       ) {
         console.log("OK");
         this.dialog = false;
