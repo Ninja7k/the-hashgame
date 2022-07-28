@@ -5,6 +5,7 @@
       persistent
       v-model="dialog"
       max-width="700px"
+      min-width="300px"
       class="elevation-18"
     >
       <!-- MODAL INICIO DE JOGO  -->
@@ -278,7 +279,7 @@
             </v-card> -->
         </v-col>
         <!-- dialogo win  -->
-        <v-dialog persistent v-model="dialog_win" max-width="400px">
+        <v-dialog persistent v-model="dialog_win" min-width="400px">
           <v-card class="pa-6 text-center">
             <h2>{{ message_win }}</h2>
             <v-icon>{{}}</v-icon>
