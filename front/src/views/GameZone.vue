@@ -4,7 +4,7 @@
     <v-dialog
       persistent
       v-model="dialog"
-      :max-width="$vuetify.breakpoint.mobile ? '320px' : '700px'"
+      :max-width="$vuetify.breakpoint.mobile ? '330px' : '700px'"
       min-width="300px"
       class="elevation-18"
     >
@@ -199,7 +199,7 @@
         pb-16
         mt-md-16
       "
-      style="min-width: 300px; max-width: 600px; max-height: 200px"
+      style="min-width: 300px; max-width: 600px; max-height: 220px"
     >
       <v-col cols="4"
         ><div class="d-flex flex-column align-start">
@@ -236,6 +236,14 @@
           </h2>
         </div></v-col
       >
+      <div class="mx-auto">
+        <h2 class="font-italic font-weight-light">
+          vez de
+          <v-icon size="30" :color="player_current.color">{{
+            player_current.icon
+          }}</v-icon>
+        </h2>
+      </div>
     </v-row>
     <!-- TABULEIRO - HASH -->
     <div class="d-flex size_all" @click="Win()">
@@ -639,7 +647,7 @@ export default {
 }
 .glass-2 {
   border-radius: 10px;
-  box-shadow: 5px 5px 125px 5px rgb(255, 255, 255, 0.2);
+  box-shadow: 5px 5px 125px 5px rgba(132, 130, 243, 0.938);
   color: white;
   background: linear-gradient(
     125deg,
