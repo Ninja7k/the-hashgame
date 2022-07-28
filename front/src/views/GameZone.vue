@@ -4,12 +4,12 @@
     <v-dialog
       persistent
       v-model="dialog"
-      :max-width="$vuetify.breakpoint.mobile ? '400px' : '700px'"
+      :max-width="$vuetify.breakpoint.mobile ? '320px' : '700px'"
       min-width="300px"
       class="elevation-18"
     >
       <!-- MODAL INICIO DE JOGO  -->
-      <v-card>
+      <v-card class="glass-2 dark" dark>
         <v-card-title class="gradiente_dark_blue"
           >Escolha as cores, símbolos e usernames
         </v-card-title>
@@ -163,7 +163,7 @@
         </v-card-text>
         <div class="d-flex flex-column">
           <v-btn class="gradiente_dark_blue ma-4" @click="setPLayers()"
-            >JOGAAAR !!!
+            >JOGAR
           </v-btn>
         </div>
       </v-card>
@@ -199,7 +199,7 @@
         pb-16
         mt-md-16
       "
-      style="min-width: 300px; max-width: 600px"
+      style="min-width: 300px; max-width: 600px; max-height: 200px"
     >
       <v-col cols="4"
         ><div class="d-flex flex-column align-start">
@@ -261,7 +261,6 @@
           @click="handleThrow(i)"
         >
           <v-icon
-            class="red"
             :color="card.color"
             v-if="card.used === true"
             :size="$vuetify.breakpoint.mobile ? 60 : 140"
@@ -292,8 +291,11 @@
         </v-col>
         <!-- dialogo win  -->
         <v-dialog persistent v-model="dialog_win" max-width="400px">
-          <v-card class="pa-6 text-center">
-            <div v-if="player_win" class="d-flex align-center">
+          <v-card class="pa-6 pt-10 text-center glass-2" dark>
+            <div
+              v-if="player_win && message_win != 'VELHA'"
+              class="d-flex align-center"
+            >
               <v-icon size="30" class="mr-2" :color="color_win">
                 {{ icon_win }}
               </v-icon>
@@ -306,8 +308,15 @@
                 venceu!
               </h2>
             </div>
+            <h2 v-else>iiiiih, DEU VELHA !</h2>
 
-            <v-img class="mt-2 rounded-xl mt-6" :src="photo_win"> </v-img>
+            <v-img
+              class="mx-auto mt-2 rounded-xl mt-6"
+              max-width="290px"
+              :aspect-ratio="1 / 1"
+              :src="photo_win"
+            >
+            </v-img>
             <br />
             <div class="d-flex flex-column">
               <v-btn
@@ -349,6 +358,7 @@ export default {
   methods: {
     newGame() {
       this.dialog_win = false;
+      this.player_win = null;
 
       this.dialog = true;
       this.cards.filter(
@@ -360,6 +370,7 @@ export default {
       this.players.filter((v) => (v.points = "0"));
     },
     PlayAgain() {
+      this.player_win = null;
       this.dialog_win = false;
       this.cards.filter(
         (v) => ((v.player = null), (v.color = "white"), (v.used = false))
@@ -393,6 +404,9 @@ export default {
           this.cards[6].player === 0)
       ) {
         this.dialog_win = true;
+        this.message_win = null;
+        this.photo_win =
+          "https://www.lance.com.br/galerias/wp-content/uploads/2022/03/luva-de-pedreiro-memes-1-636x474.jpg";
         this.players[0].points++;
         // this.message_win = `o Jogador ${this.players[1].username} venceu!`;
         this.player_win = this.players[1].username;
@@ -427,18 +441,21 @@ export default {
       ) {
         this.dialog_win = true;
         this.players[1].points++;
+        this.message_win = null;
         // this.message_win = `o Jogador ${this.players[0].username} venceu a partida!`;
         this.player_win = this.players[0].username;
-
+        this.photo_win =
+          "https://www.lance.com.br/galerias/wp-content/uploads/2022/03/luva-de-pedreiro-memes-1-636x474.jpg";
         this.icon_win = this.players[0].icon;
         this.color_win = this.players[0].color;
       }
       var used = this.cards.filter((a) => a.used === true);
-      if (used.length === 9) {
+      if (used.length === 9 && this.player_win === null) {
         this.message_win = "VELHA";
         this.photo_win =
           "https://st.depositphotos.com/1912933/4270/i/450/depositphotos_42708415-stock-photo-old-woman-with-pistol.jpg";
         this.icon_win = null;
+        this.player_win = null;
         this.color_win = null;
         this.dialog_win = true;
       }
@@ -552,10 +569,9 @@ export default {
       message_win: "",
       icon_win: "",
       player_win: null,
-      photo_win:
-        "https://www.lance.com.br/galerias/wp-content/uploads/2022/03/luva-de-pedreiro-memes-1-636x474.jpg",
+      photo_win: "",
 
-      dialog: false,
+      dialog: true,
 
       dialog_alert: false,
       message_alert: "",
@@ -612,12 +628,24 @@ export default {
 <style scoped>
 .glass-1 {
   border-radius: 10px;
-
+  box-shadow: 5px 5px 125px 5px rgb(255, 255, 255, 0.2);
+  color: white;
   background: linear-gradient(
     125deg,
     rgba(0, 0, 0, 0.5) 0%,
     rgba(6, 42, 133, 0.5) 50%,
     rgba(0, 0, 0, 0.5) 100%
+  );
+}
+.glass-2 {
+  border-radius: 10px;
+  box-shadow: 5px 5px 125px 5px rgb(255, 255, 255, 0.2);
+  color: white;
+  background: linear-gradient(
+    125deg,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(6, 42, 133, 0.9) 50%,
+    rgba(0, 0, 0, 0.9) 100%
   );
 }
 .size_all {
@@ -629,10 +657,10 @@ export default {
   margin: 0;
   background: rgb(121, 26, 26);
   background: linear-gradient(
-    90deg,
-    rgba(3, 3, 3, 0.66) 0%,
-    rgba(2, 238, 216, 0.2) 50%,
-    rgba(238, 2, 214, 0.2) 100%
+    125deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(42, 179, 0, 0.8) 50%,
+    rgba(0, 0, 0, 0.8) 100%
   );
 }
 .hero-1 {
@@ -641,19 +669,19 @@ export default {
   margin: 0 !important;
   background: rgb(121, 26, 26);
   background: linear-gradient(
-    90deg,
-    rgba(3, 3, 3, 0.66) 0%,
-    rgba(2, 238, 216, 0.2) 50%,
-    rgba(238, 2, 214, 0.2) 100%
+    125deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(6, 42, 133, 0.8) 50%,
+    rgba(0, 0, 0, 0.8) 100%
   );
 }
 .gradiente_dark_blue {
   background: rgb(238, 2, 95);
   background: linear-gradient(
-    90deg,
-    rgba(20, 0, 81, 0.66) 0%,
-    rgba(2, 238, 216, 0.2) 50%,
-    rgba(238, 2, 214, 0.2) 100%
+    125deg,
+    rgba(43, 42, 42, 0.8) 0%,
+    rgba(34, 61, 128, 0.8) 50%,
+    rgba(63, 63, 63, 0.8) 100%
   );
 }
 .no_scroll {
