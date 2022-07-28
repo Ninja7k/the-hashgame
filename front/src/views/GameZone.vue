@@ -96,7 +96,6 @@
                 <h1 class="ml-2 retro-font font-weight-light">
                   {{ set_players[1].username }}
                 </h1>
-                -1
               </div>
               <v-radio-group v-model="set_players[1].color">
                 <v-radio value="red" color="red" label="Vermelho"> </v-radio>
@@ -279,10 +278,21 @@
             </v-card> -->
         </v-col>
         <!-- dialogo win  -->
-        <v-dialog persistent v-model="dialog_win" min-width="400px">
+        <v-dialog persistent v-model="dialog_win" max-width="400px">
           <v-card class="pa-6 text-center">
-            <h2>{{ message_win }}</h2>
-            <v-icon>{{}}</v-icon>
+            <div class="d-flex align-center">
+              <v-icon size="30" class="mr-2" :color="color_win">
+                {{ icon_win }}
+              </v-icon>
+              <h2>{{ message_win }}</h2>
+              <h2>
+                O Jogador
+                <i>
+                  <b>{{ player_win }}</b>
+                </i>
+                venceu!
+              </h2>
+            </div>
 
             <v-img
               class="mt-2 rounded-xl mt-6"
@@ -375,8 +385,10 @@ export default {
       ) {
         this.dialog_win = true;
         this.players[0].points++;
-        this.message_win = `o Jogador ${this.players[1].username} venceu!`;
+        // this.message_win = `o Jogador ${this.players[1].username} venceu!`;
+        this.player_win = this.players[1].username;
         this.icon_win = this.players[1].icon;
+        this.color_win = this.players[1].color;
       }
       if (
         (this.cards[0].player === 1 &&
@@ -406,8 +418,11 @@ export default {
       ) {
         this.dialog_win = true;
         this.players[1].points++;
-        this.message_win = `o Jogador ${this.players[0].username} venceu a partida!`;
+        // this.message_win = `o Jogador ${this.players[0].username} venceu a partida!`;
+        this.player_win = this.players[0].username;
+
         this.icon_win = this.players[0].icon;
+        this.color_win = this.players[0].color;
       }
       var used = this.cards.filter((a) => a.used === true);
       if (used.length === 9) {
@@ -491,20 +506,22 @@ export default {
       }
     },
     handleThrow(i) {
-      this.cards[i].color = this.player_current.color;
-      this.cards[i].icon = this.player_current.icon;
-      if (this.player_current.player === 0) {
-        this.player_current.player = 1;
-        this.player_current.icon = this.players[1].icon;
-        this.player_current.color = this.players[1].color;
-      } else {
-        this.player_current.player = 0;
-        this.player_current.color = this.players[0].color;
-        this.player_current.icon = this.players[0].icon;
-      }
+      if (this.cards[i].used === false) {
+        this.cards[i].color = this.player_current.color;
+        this.cards[i].icon = this.player_current.icon;
+        if (this.player_current.player === 0) {
+          this.player_current.player = 1;
+          this.player_current.icon = this.players[1].icon;
+          this.player_current.color = this.players[1].color;
+        } else {
+          this.player_current.player = 0;
+          this.player_current.color = this.players[0].color;
+          this.player_current.icon = this.players[0].icon;
+        }
 
-      this.cards[i].player = this.player_current.player;
-      this.cards[i].used = true;
+        this.cards[i].player = this.player_current.player;
+        this.cards[i].used = true;
+      }
     },
   },
   data() {
@@ -518,10 +535,11 @@ export default {
       ],
 
       dialog_win: false,
+      color_win: false,
       message_win: "",
       icon_win: "",
 
-      player_win: { color: "", player: null, icon: "" },
+      player_win: "",
 
       dialog: true,
 
