@@ -594,7 +594,7 @@ export default {
       player_win: null,
       photo_win: "",
 
-      dialog: false,
+      dialog: true,
 
       dialog_alert: false,
       message_alert: "",
