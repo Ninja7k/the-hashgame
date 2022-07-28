@@ -4,7 +4,7 @@
     <v-dialog
       persistent
       v-model="dialog"
-      max-width="700px"
+      :max-width="$vuetify.breakpoint.mobile ? '400px' : '700px'"
       min-width="300px"
       class="elevation-18"
     >
@@ -186,11 +186,23 @@
     </v-dialog>
     <!-- PLACAR DE JOGADORES -->
     <v-row
-      class="dark white--text mx-auto d-flex justify-space-between pt-10"
-      style="min-width: 600px; max-width: 600px"
+      class="
+        glass-1
+        dark
+        px-4
+        align-center
+        white--text
+        mx-auto
+        d-flex
+        justify-space-between
+        pt-10
+        pb-16
+        mt-md-16
+      "
+      style="min-width: 300px; max-width: 600px"
     >
-      <v-col cols="5"
-        ><div class="d-flex flex-column align-start" style="width: 40%">
+      <v-col cols="4"
+        ><div class="d-flex flex-column align-start">
           <v-icon v-if="set_players[0].icon" size="50" :color="players[0].color"
             >{{ players[0].icon }}
           </v-icon>
@@ -203,15 +215,15 @@
           </h2>
         </div></v-col
       >
-      <v-col cols="2"
-        ><div class="mx-auto mt-6">
+      <v-col cols="4"
+        ><div class="mx-auto mt-6 d-flex align-center">
           <h1 class="mx-auto">
             {{ this.players[1].points + " - " + this.players[0].points }}
           </h1>
         </div></v-col
       >
-      <v-col cols="5 d-flex justify-end">
-        <div class="d-flex align-center flex-column justify-center">
+      <v-col cols="4">
+        <div class="d-flex align-end flex-column justify-center">
           <v-icon v-if="set_players[1].icon" size="50" :color="players[1].color"
             >{{ players[1].icon }}
           </v-icon>
@@ -229,31 +241,32 @@
     <div class="d-flex size_all" @click="Win()">
       <v-row
         class="gradient mx-auto mt-8"
-        style="
-          min-width: 600px;
-          max-width: 600px;
-          min-height: 600px;
-          max-height: 600px;
+        :style="
+          $vuetify.breakpoint.mobile
+            ? 'min-width: 300px; max-width: 300px; min-height: 300px; max-height: 300px;'
+            : 'min-width: 600px; max-width: 600px; min-height: 600px; max-height: 600px;'
         "
       >
         <v-col
-          style="
-          border: solid 1px white
-            min-width: 200px;
-            max-width: 200px;
-            min-height: 200px;
-            max-height: 200px;
+          :style="
+            $vuetify.breakpoint.mobile
+              ? 'border: solid 1px white; min-width: 100px; max-width: 100px; min-height: 100px; max-height: 100px;'
+              : 'border: solid 1px white; min-width: 200px; max-width: 200px; min-height: 200px; max-height: 200px;'
           "
-          class="pa-8 elevation-10 flex d-flex"
+          class="mx-auto elevation-10 flex d-flex align-center justify-center"
           cols="4"
           v-for="(card, i) in cards"
           :key="i"
           :aspect-ratio="1 / 1"
           @click="handleThrow(i)"
         >
-          <v-icon :color="card.color" v-if="card.used === true" size="150">{{
-            card.icon
-          }}</v-icon>
+          <v-icon
+            class="red"
+            :color="card.color"
+            v-if="card.used === true"
+            :size="$vuetify.breakpoint.mobile ? 60 : 140"
+            >{{ card.icon }}</v-icon
+          >
 
           <!-- <v-card
               class="
@@ -280,7 +293,7 @@
         <!-- dialogo win  -->
         <v-dialog persistent v-model="dialog_win" max-width="400px">
           <v-card class="pa-6 text-center">
-            <div class="d-flex align-center">
+            <div v-if="player_win" class="d-flex align-center">
               <v-icon size="30" class="mr-2" :color="color_win">
                 {{ icon_win }}
               </v-icon>
@@ -294,11 +307,7 @@
               </h2>
             </div>
 
-            <v-img
-              class="mt-2 rounded-xl mt-6"
-              src="https://www.lance.com.br/galerias/wp-content/uploads/2022/03/luva-de-pedreiro-memes-1-636x474.jpg"
-            >
-            </v-img>
+            <v-img class="mt-2 rounded-xl mt-6" :src="photo_win"> </v-img>
             <br />
             <div class="d-flex flex-column">
               <v-btn
@@ -426,8 +435,12 @@ export default {
       }
       var used = this.cards.filter((a) => a.used === true);
       if (used.length === 9) {
-        this.dialog_win = true;
         this.message_win = "VELHA";
+        this.photo_win =
+          "https://st.depositphotos.com/1912933/4270/i/450/depositphotos_42708415-stock-photo-old-woman-with-pistol.jpg";
+        this.icon_win = null;
+        this.color_win = null;
+        this.dialog_win = true;
       }
       return console.log("Ainda não!");
     },
@@ -538,10 +551,11 @@ export default {
       color_win: false,
       message_win: "",
       icon_win: "",
+      player_win: null,
+      photo_win:
+        "https://www.lance.com.br/galerias/wp-content/uploads/2022/03/luva-de-pedreiro-memes-1-636x474.jpg",
 
-      player_win: "",
-
-      dialog: true,
+      dialog: false,
 
       dialog_alert: false,
       message_alert: "",
@@ -596,6 +610,16 @@ export default {
 };
 </script>
 <style scoped>
+.glass-1 {
+  border-radius: 10px;
+
+  background: linear-gradient(
+    125deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(6, 42, 133, 0.5) 50%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
 .size_all {
   width: 100%;
   height: 100%;
