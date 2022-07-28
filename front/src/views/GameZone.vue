@@ -164,7 +164,7 @@
         </v-card-text>
         <div class="d-flex flex-column">
           <v-btn class="gradiente_dark_blue ma-4" @click="setPLayers()"
-            >JOGAR
+            >JOGAAAR !!!
           </v-btn>
         </div>
       </v-card>
