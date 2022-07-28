@@ -195,9 +195,10 @@
         mx-auto
         d-flex
         justify-space-between
-        pt-10
+        pt-8
         pb-16
-        mt-md-16
+        ma-2
+        mt-md-8
       "
       style="min-width: 300px; max-width: 600px; max-height: 220px"
     >
@@ -248,7 +249,7 @@
     <!-- TABULEIRO - HASH -->
     <div class="d-flex size_all" @click="Win()">
       <v-row
-        class="gradient mx-auto mt-8"
+        class="glass-2 mx-auto mt-8"
         :style="
           $vuetify.breakpoint.mobile
             ? 'min-width: 300px; max-width: 300px; min-height: 300px; max-height: 300px;'
@@ -344,6 +345,20 @@
             </div>
           </v-card>
         </v-dialog>
+        <div class="white--text mx-auto d-flex align-center mt-2">
+          <h3 class="mr-2 font-italic font-weight-light">
+            Desenvolvido por Raphael Ferreira Bertoldo
+          </h3>
+          <a href="https://github.com/Ninja7k" target="blank">
+            <v-icon class="mx-2" color="white">mdi-github</v-icon>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/raphael-ferreira-5634a3229/"
+            target="blank"
+          >
+            <v-icon to="" color="white">mdi-linkedin</v-icon>
+          </a>
+        </div>
       </v-row>
       <!-- <v-card
         class="white mx-auto mt-16"
@@ -579,7 +594,7 @@ export default {
       player_win: null,
       photo_win: "",
 
-      dialog: true,
+      dialog: false,
 
       dialog_alert: false,
       message_alert: "",
@@ -634,6 +649,9 @@ export default {
 };
 </script>
 <style scoped>
+a {
+  text-decoration: none;
+}
 .glass-1 {
   border-radius: 10px;
   box-shadow: 5px 5px 125px 5px rgb(255, 255, 255, 0.2);
@@ -647,7 +665,7 @@ export default {
 }
 .glass-2 {
   border-radius: 10px;
-  box-shadow: 5px 5px 125px 5px rgba(132, 130, 243, 0.938);
+  box-shadow: 5px 5px 125px 5px rgba(34, 34, 73, 0.4);
   color: white;
   background: linear-gradient(
     125deg,
